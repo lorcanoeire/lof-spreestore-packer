@@ -1,3 +1,4 @@
 .env
 vendor/
 .bundle/
+ec2_amazon-ebs.pem

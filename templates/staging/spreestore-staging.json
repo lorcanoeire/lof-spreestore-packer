@@ -3,13 +3,13 @@
     "base_ami": null,
     "base_ami_name": null,
     "vpc_id": null,
-    "subnet_id": null,
     "type": null,
     "build_name": null,
     "build_number": null,
     "build_revision": null,
     "aws_access_key_id": "{{env `AWS_ACCESS_KEY_ID`}}",
     "aws_secret_access_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "vault_environment": null,
     "vault_secret": "{{env `VAULT_PASSWORD`}}"
   },
   "builders": [
@@ -17,10 +17,10 @@
       "type": "amazon-ebs",
       "access_key": "{{user `aws_access_key_id`}}",
       "secret_key": "{{user `aws_secret_access_key`}}",
-      "instance_type": "t2.small",
-      "ssh_username": "ec2-user",
+      "instance_type": "m1.small",
+      "ssh_username": "ubuntu",
       "ssh_pty": true,
-      "ami_name": "{{user `type`}} - Spreestore Staging - {{user `build_number`}}",
+      "ami_name": "Spreestore Staging - {{user `build_number`}}",
       "run_tags": {
         "Name": "Packer builder - Spreestore Staging AMI",
         "Base-AMI": "{{user `base_ami`}}",
@@ -40,7 +40,6 @@
       "ssh_timeout": "10m",
       "region": "ap-southeast-2",
       "vpc_id": "{{user `vpc_id`}}",
-      "subnet_id": "{{user `subnet_id`}}",
       "associate_public_ip_address" : false,
       "source_ami": "{{user `base_ami`}}"
     }
@@ -56,6 +55,12 @@
       "type": "file",
       "source": "serverspec/spreestore-staging/",
       "destination": "/tmp/serverspec"
+    },
+    {
+      "type": "shell",
+      "inline": [
+          "sudo apt-get -y install software-properties-common && sudo apt-add-repository -y ppa:ansible/ansible && sudo apt-get update && sudo apt-get -y install ansible"
+      ]
     },
     {
       "type": "shell",
@@ -85,7 +90,7 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/serverspec.sh",
+        "scripts/serverspec.sh"
       ]
     }
   ]
