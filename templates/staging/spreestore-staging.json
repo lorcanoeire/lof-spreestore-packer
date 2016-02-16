@@ -1,0 +1,92 @@
+{
+  "variables": {
+    "base_ami": null,
+    "base_ami_name": null,
+    "vpc_id": null,
+    "subnet_id": null,
+    "type": null,
+    "build_name": null,
+    "build_number": null,
+    "build_revision": null,
+    "aws_access_key_id": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_access_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "vault_secret": "{{env `VAULT_PASSWORD`}}"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key_id`}}",
+      "secret_key": "{{user `aws_secret_access_key`}}",
+      "instance_type": "t2.small",
+      "ssh_username": "ec2-user",
+      "ssh_pty": true,
+      "ami_name": "{{user `type`}} - Spreestore Staging - {{user `build_number`}}",
+      "run_tags": {
+        "Name": "Packer builder - Spreestore Staging AMI",
+        "Base-AMI": "{{user `base_ami`}}",
+        "Base-AMI-Name": "{{user `base_ami_name`}}",
+        "Build-Name": "{{user `build_name`}}",
+        "Build-Number": "{{user `build_number`}}",
+        "Build-Revision": "{{user `build_revision`}}"
+      },
+      "tags": {
+        "Description": "Spreestore Staging AMI",
+        "Base-AMI": "{{user `base_ami`}}",
+        "Base-AMI-Name": "{{user `base_ami_name`}}",
+        "Build-Name": "{{user `build_name`}}",
+        "Build-Number": "{{user `build_number`}}",
+        "Build-Revision": "{{user `build_revision`}}"
+      },
+      "ssh_timeout": "10m",
+      "region": "ap-southeast-2",
+      "vpc_id": "{{user `vpc_id`}}",
+      "subnet_id": "{{user `subnet_id`}}",
+      "associate_public_ip_address" : false,
+      "source_ami": "{{user `base_ami`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir -p /tmp/serverspec"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "serverspec/spreestore-staging/",
+      "destination": "/tmp/serverspec"
+    },
+    {
+      "type": "shell",
+      "inline": [
+          "echo \"export VAULT_PASSWORD=\"{{user `vault_secret`}}\"\" > ~/passwordExport"
+      ]
+    },
+    {
+      "type": "ansible-local",
+      "command": "source ~/passwordExport && ansible-playbook",
+      "playbook_dir": "ansible",
+      "role_paths": "ansible/playbooks",
+      "inventory_file": "ansible/inventory/packer",
+      "playbook_file": "ansible/playbooks/staging.yml",
+      "extra_arguments": [
+             "-e vault_environment={{user `vault_environment`}}",
+             " --vault-password-file=vault/vault_pass.py",
+             " -vvvv"
+         ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "rm ~/passwordExport"
+      ]
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/serverspec.sh",
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+---
+mysql_data_dir: /data/mysql
+mysql_image: mysql:latest

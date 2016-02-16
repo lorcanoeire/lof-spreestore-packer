@@ -1,0 +1,14 @@
+---
+- name: "Stop mysql instance"
+  command: "docker stop {{ mysql_name }}"
+  register: stop_mysql
+  sudo: yes
+
+- debug: var=stop_mysql
+
+- name: "Remove mysql container"
+  command: "docker rm {{ mysql_name }}"
+  register: remove_mysql
+  sudo: yes
+
+- debug: var=remove_mysql

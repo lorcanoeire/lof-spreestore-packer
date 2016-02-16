@@ -1,0 +1,36 @@
+---
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Start Nginx
+  service:
+    name: nginx
+    state: started
+
+- include: nginx-wordpress.yml
+  when: nginx_template_type=="wordpress"
+
+- include: nginx-spreestore.yml
+  when: nginx_template_type=="spreestore"
+
+- name: Create SSL cert dir
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+
+- name: Install SSL Cert
+  template:
+    src: server.crt.j2
+    dest: /etc/nginx/ssl/{{ domain_name }}.crt
+
+- name: Install SSL Cert Key
+  template:
+    src: server.key.j2
+    dest: /etc/nginx/ssl/{{ domain_name }}.key
+
+- name: Install Nginx configuration
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf

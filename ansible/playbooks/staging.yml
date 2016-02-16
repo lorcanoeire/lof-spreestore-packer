@@ -1,0 +1,12 @@
+---
+- hosts: packer
+  connection: ssh
+  sudo: yes
+  vars_files:
+    - vault/{{ vault_environment }}.yml
+  pre_tasks:
+    - name: Run sample task and retrieve value from vault
+      shell: "echo 'successfully retrieved {{ sample_key }} for sample_key from vault'"
+  roles:
+    - { role: mysql, :mysql_docker 'install_mysql' }
+    - { role: nginx, :nginx_mode 'install_nginx', :nginx_template_type 'spreestore' }
