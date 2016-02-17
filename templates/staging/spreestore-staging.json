@@ -72,7 +72,7 @@
       "type": "ansible-local",
       "command": "source ~/passwordExport && ansible-playbook",
       "playbook_dir": "ansible",
-      "role_paths": "ansible/playbooks",
+      "role_paths": ["ansible/playbooks/roles/docker","ansible/playbooks/roles/mysql","ansible/playbooks/roles/nginx","ansible/playbooks/roles/rvm"],
       "inventory_file": "ansible/inventory/packer",
       "playbook_file": "ansible/playbooks/staging.yml",
       "extra_arguments": [

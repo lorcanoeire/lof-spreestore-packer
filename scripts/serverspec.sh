@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo yum install -q -y rubygem-bundler
+sudo apt-get install -y bundler
 
 cd /tmp/serverspec
 
@@ -7,5 +7,4 @@ sudo bundle install --path=vendor
 sudo bundle exec rake spec || exit $ERRCODE
 
 sudo rm -rf /tmp/packer-provisioner-ansible-local
-sudo yum remove -q -y rubygem-bundler
-sudo yum autoremove -q -y
+sudo apt-get remove -y bundler

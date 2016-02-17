@@ -3,11 +3,11 @@
   file:
     path: "{{ mysql_data_dir }}"
     state: directory
-  sudo: yes
+  become: yes
 
 - name: "Start mysql instance"
   command: "docker run --name {{ mysql_name }} -v {{ mysql_data_dir }}:/var/lib/mysql -e MYSQL_ROOT_PASSWORD={{ db_password }} -d mysql:latest"
   register: run_mysql
-  sudo: yes
+  become: yes
 
 - debug: var=run_mysql

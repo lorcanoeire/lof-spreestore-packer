@@ -2,6 +2,6 @@
 - name: "Install mysql instance"
   command: "docker pull {{ mysql_image }}"
   register: install_mysql
-  sudo: yes
+  become: yes
 
 - debug: var=install_mysql

@@ -16,7 +16,7 @@ task :check_aws_environment do
 end
 
 desc "Packer build with ansible. ami, vpc_id, 'd' for debug, prod or non_prod for environment"
-task :packer_ansible_build, [:ami, :vpc_id, :debug, :environment] => [:check_aws_environment] do |t, args|
+task :packer_ansible_build, [:ami,:vpc_id,:environment,:debug] => [:check_aws_environment] do |t, args|
 
   build_number = Time.now.to_i
 
