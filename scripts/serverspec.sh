@@ -1,5 +1,6 @@
 #!/bin/bash
-sudo apt-get install -y bundler
+source /home/ubuntu/.rvm/scripts/rvm
+gem install bundler
 
 cd /tmp/serverspec
 
@@ -7,4 +8,4 @@ sudo bundle install --path=vendor
 sudo bundle exec rake spec || exit $ERRCODE
 
 sudo rm -rf /tmp/packer-provisioner-ansible-local
-sudo apt-get remove -y bundler
+gem uninstall bundler

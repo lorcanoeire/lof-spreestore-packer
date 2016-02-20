@@ -9,26 +9,21 @@
     name: nginx
     state: started
 
-- include: nginx-wordpress.yml
-  when: nginx_template_type=="wordpress"
-
-- include: nginx-spreestore.yml
-  when: nginx_template_type=="spreestore"
+- name: Enable default site
+  template:
+    src: default.j2
+    dest: /etc/nginx/sites-enabled/{{ domain_name }}
 
 - name: Create SSL cert dir
   file:
     path: /etc/nginx/ssl
     state: directory
 
-- name: Install SSL Cert
-  template:
-    src: server.crt.j2
-    dest: /etc/nginx/ssl/{{ domain_name }}.crt
+- name: SSL crt - Create placeholder server.crt file
+  file: path=/etc/nginx/ssl/server.crt state=touch mode=0555
 
-- name: Install SSL Cert Key
-  template:
-    src: server.key.j2
-    dest: /etc/nginx/ssl/{{ domain_name }}.key
+- name: SSL key - Create placeholder server.key file
+  file: path=/etc/nginx/ssl/server.key state=touch mode=0555
 
 - name: Install Nginx configuration
   template:

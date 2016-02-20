@@ -1,8 +1,24 @@
 ---
-- name: Install RVM
-  shell: gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 && curl -sSL https://get.rvm.io | bash -s stable --rails
+- name: Install no documentation when installing gems
+  command: "echo 'gem: --no-rdoc --no-ri' >> ~/.gemrc"
+  become_user: ubuntu
+
+- name: Install RVM GPG key
+  command: "gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3"
   become: yes
+  become_user: ubuntu
+
+- name: Install RVM
+  command: '/usr/bin/curl -sSL https://get.rvm.io | bash -s stable --ruby'
+  become: yes
+  become_user: ubuntu
+
+- name: Source rvm and gemrc
+  command: source /home/ubuntu/.rvm/scripts/rvm && source ~/.gemrc
+  become: yes
+  become_user: ubuntu
 
 - name: Install Ruby 2.1.2
-  shell: rvm install ruby-2.1.2
+  command: rvm install ruby-2.1.2
   become: yes
+  become_user: ubuntu

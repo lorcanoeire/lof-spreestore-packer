@@ -1,0 +1,4 @@
+---
+- src: https://github.com/rvm/rvm1-ansible
+  version: master
+  name: rvm_io.rvm1-ruby

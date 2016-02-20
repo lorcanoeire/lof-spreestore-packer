@@ -20,9 +20,9 @@
       "instance_type": "m1.small",
       "ssh_username": "ubuntu",
       "ssh_pty": true,
-      "ami_name": "Spreestore Staging - {{user `build_number`}}",
+      "ami_name": " {{user `build_name`}} staging - {{user `build_number`}}",
       "run_tags": {
-        "Name": "Packer builder - Spreestore Staging AMI",
+        "Name": "Packer builder - {{user `build_name`}} staging AMI",
         "Base-AMI": "{{user `base_ami`}}",
         "Base-AMI-Name": "{{user `base_ami_name`}}",
         "Build-Name": "{{user `build_name`}}",
@@ -30,7 +30,7 @@
         "Build-Revision": "{{user `build_revision`}}"
       },
       "tags": {
-        "Description": "Spreestore Staging AMI",
+        "Description": "{{user `build_name`}} staging AMI",
         "Base-AMI": "{{user `base_ami`}}",
         "Base-AMI-Name": "{{user `base_ami_name`}}",
         "Build-Name": "{{user `build_name`}}",
@@ -53,7 +53,7 @@
     },
     {
       "type": "file",
-      "source": "serverspec/spreestore-staging/",
+      "source": "serverspec/staging/",
       "destination": "/tmp/serverspec"
     },
     {
@@ -85,12 +85,6 @@
       "type": "shell",
       "inline": [
         "rm ~/passwordExport"
-      ]
-    },
-    {
-      "type": "shell",
-      "scripts": [
-        "scripts/serverspec.sh"
       ]
     }
   ]

@@ -9,6 +9,5 @@
       shell: echo "successfully retrieved {{ sample_key }} for sample_key from vault"
   roles:
     - docker
-    - rvm
     - { role: mysql, mysql_docker: 'install_mysql' }
-    - { role: nginx, nginx_mode: 'install_nginx', nginx_template_type: 'spreestore' }
+    - { role: nginx, nginx_mode: 'install_nginx' }

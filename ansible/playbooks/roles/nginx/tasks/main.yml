@@ -1,11 +1,3 @@
 ---
 - include: nginx-install.yml
   when: nginx_mode=="install_nginx"
-- include: nginx-start.yml
-  when: nginx_mode=="start_nginx"
-- include: nginx-stop.yml
-  when: nginx_mode=="stop_nginx"
-- include: nginx-reload.yml
-  when: nginx_mode=="reload_nginx"
-- include: nginx-stop.yml
-  when: nginx_mode=="stop_nginx"

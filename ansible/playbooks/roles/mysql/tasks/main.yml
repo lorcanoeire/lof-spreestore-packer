@@ -1,7 +1,3 @@
 ---
 - include: mysql-install.yml
   when: mysql_docker=="install_mysql"
-- include: mysql-start.yml
-  when: mysql_docker=="start_mysql"
-- include: mysql-stop.yml
-  when: mysql_docker=="stop_mysql"

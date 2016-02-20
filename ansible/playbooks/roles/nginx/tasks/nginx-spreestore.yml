@@ -1,5 +1,0 @@
----
-- name: Install Spree Store Nginx configuration
-  template:
-    src: spreestore.j2
-    dest: /etc/nginx/sites-enabled/{{ domain_name }}
