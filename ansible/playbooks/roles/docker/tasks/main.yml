@@ -1,3 +1,9 @@
 ---
  - name: Install docker
    apt: name=docker.io state=present update_cache=yes
+
+ - name: Install python-pip
+   apt: name=python-pip state=present
+
+ - name: Install docker-py
+   pip: name=docker-py state=present
