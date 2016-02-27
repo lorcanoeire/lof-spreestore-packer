@@ -1,0 +1,19 @@
+---
+ - name: Install php5-cli
+   apt: name=php5-cli state=present update_cache=yes
+
+ - name: Install wp-cli phar
+   command: /usr/bin/curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+   args:
+     chdir: /home/ubuntu
+
+ - name: Change permissions of wp-cli phar
+   command: /bin/chmod +x wp-cli.phar
+   args:
+     chdir: /home/ubuntu
+
+ - name: Install wp-cli phar
+   command: mv wp-cli.phar /usr/local/bin/wp
+   args:
+     chdir: /home/ubuntu
+  become: yes
